@@ -1,0 +1,14 @@
+{
+    "buttons": [
+        {
+            "id": 0,
+            "label": "Demoman says crepe",
+            "file": "Demoman says crepe [rLTaFXHWngM].mp3"
+        },
+        {
+            "id": 1,
+            "label": "come",
+            "file": "Heavy says come [PHjRS7FQ3UM].mp3"
+        }
+    ]
+}
