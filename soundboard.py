@@ -22,8 +22,9 @@ def volumeSoundboard():
     mixer.music.set_volume(vol)
 
 # Get soundboard config
-sbConf = open("soundboard.json")
+sbConf = open("carbonConfig.json")
 sbData = json.load(sbConf)
+sbData = sbData["modules"]["soundboard"]
 
 def init(show=True):
     # Soundboard Window

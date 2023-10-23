@@ -4,7 +4,24 @@
 
         },
         "soundboard": {
-            "show": true
+            "show": true,
+            "buttons": [
+                {
+                    "id": 0,
+                    "label": "Demoman says crepe ",
+                    "file": "Demoman says crepe [rLTaFXHWngM].mp3"
+                },
+                {
+                    "id": 1,
+                    "label": "Heavy says come ",
+                    "file": "Heavy says come [PHjRS7FQ3UM].mp3"
+                },
+                {
+                    "id": 2,
+                    "label": "Sniper says a golf trophy ",
+                    "file": "Sniper says a golf trophy [HOIGaqG9gpU].mp3"
+                }
+            ]
         }
     }
 

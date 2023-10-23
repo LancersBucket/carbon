@@ -33,10 +33,7 @@ def dynamic_module_import(module_name):
    #return load_module
 
 for module in config["modules"]:
-   print(module)
    dynamic_module_import(module)
-
-#soundboard.init(config["modules"]["soundboard"]["show"])
 
 dpg.show_viewport()
 dpg.start_dearpygui()
