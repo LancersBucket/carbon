@@ -2,6 +2,10 @@ import json, os
 
 jsonFile = "soundboard.json"
 
+# Prevents the script from overwriting any custom names
+if (os.path.isfile(jsonFile)):
+    exit()
+
 dictionary = {
     "buttons": []
     }

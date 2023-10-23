@@ -25,9 +25,9 @@ def volumeSoundboard():
 sbConf = open("soundboard.json")
 sbData = json.load(sbConf)
 
-def initSoundboard():
+def initSoundboard(show=True):
     # Soundboard Window
-    with dpg.window(label="Soundboard"):
+    with dpg.window(label="Soundboard",show=show):
         width = 6
         total_length = len(sbData["buttons"])
         # Calculaltes how many rows are needed with given length
