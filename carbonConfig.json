@@ -1,5 +1,8 @@
 {
     "modules": {
+        "main": {
+
+        },
         "soundboard": {
             "show": true
         }

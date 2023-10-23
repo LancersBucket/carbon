@@ -25,7 +25,7 @@ def volumeSoundboard():
 sbConf = open("soundboard.json")
 sbData = json.load(sbConf)
 
-def initSoundboard(show=True):
+def init(show=True):
     # Soundboard Window
     with dpg.window(label="Soundboard",show=show):
         width = 6
