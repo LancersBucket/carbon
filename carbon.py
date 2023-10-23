@@ -1,6 +1,6 @@
+import math, json
 import dearpygui.dearpygui as dpg
 from pygame import mixer
-import json
 
 mixer.init()
 
@@ -31,10 +31,21 @@ dpg.setup_dearpygui()
 
 # Soundboard Window
 with dpg.window(label="Soundboard"):
-    with dpg.group(horizontal=True):
-        # Generate soundboard buttons
-        for button in sbData["buttons"]:
-            dpg.add_button(label=button["label"], callback=soundboard, height=75, width=75, tag="button"+str(button["id"]))
+    width = 6
+    total_length = len(sbData["buttons"])
+    # Calculaltes how many rows are needed with given length
+    rows = math.ceil(total_length / width)
+    
+    # Creates groups to put buttons
+    groups = []
+    for i in range(rows):
+        groups.append(dpg.add_group(horizontal=True))
+
+    # Adds buttons to each row, overflows to next row if space is needed
+    for i in range(total_length):
+        button = sbData["buttons"][i]
+        currentRow = math.floor(i/(width))
+        dpg.add_button(label=button["label"], callback=soundboard, height=75, width=75, tag="button"+str(button["id"]),parent=groups[currentRow])
     
     # Stop and volume slider
     dpg.add_button(label="Stop", callback=stopSoundboard)
