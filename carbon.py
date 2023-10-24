@@ -11,7 +11,7 @@ dpg.create_context()
 dpg.create_viewport(title='Carbon', width=700, height=600)
 dpg.setup_dearpygui()
 
-# function to dynamically load module
+# Module Loader
 def dynamic_module_import(module_name):
    try:
       load_module = importlib.import_module(module_name)
@@ -23,6 +23,7 @@ def dynamic_module_import(module_name):
       return (False, None)
    return (True, load_module)
 
+# Generates an array of module data and human names
 loaded_modules = []
 module_names = []
 for module in config["modules"]:
@@ -31,13 +32,22 @@ for module in config["modules"]:
       loaded_modules.append(out[1])
       module_names.append(module)
 
-def window_handler(windowName):
+# Handles the regeneration of windows
+def window_handler():
    loaded_modules[module_names.index(dpg.get_value("Modules"))].init()
 
-
-with dpg.window(label="Carbon Loader",show=True,no_open_over_existing_popup=False,width=200,height=300):
+# Main Carbon Window. Helps open apps.
+with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=300):
    dpg.add_text("Carbon")
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler)
+
+def showCarbonLoader(sender):
+    print(f"Menu Item: {sender}")
+    dpg.focus_item("CL")
+
+with dpg.viewport_menu_bar():
+    with dpg.menu(label="File"):
+        dpg.add_menu_item(label="Carbon Loader", callback=showCarbonLoader)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
