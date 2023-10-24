@@ -36,7 +36,7 @@ def window_handler():
    loaded_modules[module_names.index(dpg.get_value("Modules"))].showWindow(show=True)
 
 # Main Carbon Loader Window. Helps open apps.
-with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=300):
+with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=300,on_close=dpg.delete_item("CL"),no_close=True):
    dpg.add_text("Carbon")
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler)
 
@@ -47,8 +47,8 @@ def showDemo():
    demo.show_demo()
 
 with dpg.viewport_menu_bar():
-   dpg.add_menu_item(label="Carbon Loader", callback=showCarbonLoader)
-   dpg.add_menu_item(label="Demo Menu", callback=showDemo)
+   dpg.add_menu_item(label="Carbon Loader", tag="Carbon Loader", callback=showCarbonLoader)
+   dpg.add_menu_item(label="Demo Menu", tag="Demo Menu", callback=showDemo)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
