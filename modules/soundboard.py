@@ -2,26 +2,33 @@ import json, os, sys
 from pygame import mixer
 from math import ceil, floor
 import dearpygui.dearpygui as dpg
-# Dirty fix to access cmh
+# Dirty fix to access carbonmodule
 sys.path.append('../Carbon')
 import carbonmodulehelper as cmh
+
+playingSound = None
 
 # Soundboard song player (uses soundboard.json to locate files)
 def soundboard(sender):
     # Super brutal way to rip the numbers out of the id but it works
     soundid = int("".join(filter(str.isnumeric,sender)))
-    mixer.music.load(sbData["soundFolder"]+'/'+sbData["buttons"][soundid]["file"])
-    mixer.music.play()
+    global playingSound
+    playingSound = mixer.Sound(sbData["soundFolder"]+'/'+sbData["buttons"][soundid]["file"])
+    playingSound.set_volume(dpg.get_value(volumeSlider)/100)
+    mixer.Channel(0).play(playingSound)
 
 # Stops the soundboard
 def stopSoundboard():
-    mixer.music.stop()
+    mixer.stop()
 
 # Volume of soundboard
 def volumeSoundboard():
     vol = dpg.get_value(volumeSlider)
     vol /= 100
-    mixer.music.set_volume(vol)
+    try:
+        playingSound.set_volume(vol)
+    except:
+        pass
 
 # Destroy function of window
 def destroy():
