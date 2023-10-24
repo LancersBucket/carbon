@@ -3,7 +3,7 @@
         "soundboard": {
             "show": true,
             "soundFolder": "files",
-            "regenConfig": false,
+            "regenButtons": false,
             "buttons": [
                 {
                     "id": 0,

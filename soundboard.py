@@ -1,5 +1,5 @@
-from pygame import mixer
 import math, json, os
+from pygame import mixer
 import dearpygui.dearpygui as dpg
 import carbonmodulehelper as cmh
 
@@ -29,8 +29,8 @@ def destroy():
 sbData = cmh.readConfig("soundboard")
 Data = cmh.readConfig("global")
 
-if (sbData["regenConfig"] == True):
-    Data["modules"]["soundboard"]["regenConfig"] = False
+if (sbData["regenButtons"] == True):
+    Data["modules"]["soundboard"]["regenButtons"] = False
     Data["modules"]["soundboard"].pop("buttons")
     Data["modules"]["soundboard"]["buttons"] = []
     
