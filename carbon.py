@@ -37,7 +37,7 @@ def window_handler(windowName):
 
 with dpg.window(label="Carbon Loader",show=True,no_open_over_existing_popup=False,width=200,height=300):
    dpg.add_text("Carbon")
-   dpg.add_listbox(module_names,id="Modules",callback=window_handler)
+   dpg.add_listbox(module_names,tag="Modules",callback=window_handler)
 
 dpg.show_viewport()
 dpg.start_dearpygui()

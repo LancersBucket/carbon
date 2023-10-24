@@ -1,5 +1,5 @@
 from pygame import mixer
-import math, json
+import math, json, os
 import dearpygui.dearpygui as dpg
 
 mixer.init()
@@ -23,8 +23,25 @@ def volumeSoundboard():
 
 # Get soundboard config
 sbConf = open("carbonConfig.json")
-sbData = json.load(sbConf)
-sbData = sbData["modules"]["soundboard"]
+Data = json.load(sbConf)
+sbData = Data["modules"]["soundboard"]
+
+if (sbData["regenConfig"] == True):
+    Data["modules"]["soundboard"]["regenConfig"] = False
+    Data["modules"]["soundboard"].pop("buttons")
+    Data["modules"]["soundboard"]["buttons"] = []
+    
+    counter = 0
+    for f in os.listdir("files"):
+        Data["modules"]["soundboard"]["buttons"].append({"id":counter,"label":f.split(" [")[0],"file":f})
+        counter += 1
+
+    newData = json.dumps(Data, indent=4)
+
+    with open('carbonConfig.json', 'w') as file:
+        # write
+        file.write(newData)
+    pass
 
 def init(show=True):
     # Soundboard Window

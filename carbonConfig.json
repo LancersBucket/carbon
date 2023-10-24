@@ -5,6 +5,7 @@
         },
         "soundboard": {
             "show": true,
+            "regenConfig": false,
             "buttons": [
                 {
                     "id": 0,
@@ -24,5 +25,4 @@
             ]
         }
     }
-
 }
