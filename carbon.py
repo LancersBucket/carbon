@@ -2,6 +2,7 @@ import dearpygui.dearpygui as dpg
 import dearpygui.demo as demo
 import carbonmodulehelper as cmh
 import importlib
+from pygame import mixer
 
 config = cmh.readConfig("global")
 
@@ -69,4 +70,9 @@ with dpg.viewport_menu_bar():
 dpg.show_viewport()
 dpg.start_dearpygui()
 dpg.destroy_context()
+try:
+   mixer.stop()
+   mixer.quit()
+except:
+   pass
 quit()

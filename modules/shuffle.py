@@ -1,10 +1,9 @@
 from pygame import mixer
+from pygame import time
 import sys, os, random, configparser, yt_dlp
 sys.path.append('../Carbon')
 import carbonmodulehelper as cmh
 import dearpygui.dearpygui as dpg
-
-config = cmh.readConfig("shuffle")
 
 def showMessage(msg):
     dpg.set_value("status",msg)
@@ -12,12 +11,14 @@ def showMessage(msg):
 def shuffle(array):
     array = random.shuffle(array)
 
-def playsong(self):
+def playsong():
+    global queue
+    global currentPos
+    global playing
     try:
         # Gets the name of the file in the queue displays what is currently playing
         name = queue[currentPos]
         showMessage("[" + str(currentPos+1)+"/"+str(len(queue))+"] " + name[0:-4])
-
         # Loads the music and plays it
         mixer.music.load('music/'+name)
         mixer.music.set_volume(dpg.get_value("vol")/100)
@@ -26,8 +27,11 @@ def playsong(self):
         showMessage("Error: No songs are loaded.")
 
 # Handles pausing and playing. Don't question it. I had to do it this way. I hope.
-def playPauseButton(self):
+def playPauseButton():
     try:
+        global playing
+        global paused
+        global currentPos
         if not playing:
             playing = True
             if (paused):
@@ -37,19 +41,21 @@ def playPauseButton(self):
                 paused = False
             else:
                 playsong()
-            dpg.set_value("Play","Pause")
+            dpg.set_value("play","Pause")
         else:
             playing = False
             paused = True
             mixer.music.pause()
-            dpg.set_value("Play","Play")
+            dpg.set_value("play","Play")
             showMessage("Paused")
     except:
-        showMessage("Cannotp play, no songs are loaded.")
+        showMessage("Cannot play, no songs are loaded.")
 
 
 # Decrements the queue position
 def backButton():
+    global currentPos
+    global queue
     mixer.music.stop()
     if (currentPos < 0):
         currentPos = len(queue)
@@ -59,6 +65,8 @@ def backButton():
 
 # Increments the queue position
 def forwardButton():
+    global currentPos
+    global queue
     if (currentPos >= len(queue)-1):
         mixer.music.stop()
         shuffle(queue)
@@ -73,6 +81,8 @@ def volChange():
 
 # Reloads the queue and shuffles it
 def shuffleButton():
+    global queue
+    global currentPos
     mixer.music.stop()
 
     queue = []
@@ -93,22 +103,24 @@ def focusWindow():
     dpg.focus_item("shuffle")
 
 def init():
-    showWindow(True)
-    dpg.focus_item("shuffle")
-
-def showWindow(show=False):
-    global queue
-    queue = []
+    global config
+    config = cmh.readConfig("shuffle")
     global currentPos
     currentPos = 0
+    global queue
+    queue = []
     global playing
     playing = False
     global paused
     paused = False
+    showWindow(True)
+    dpg.focus_item("shuffle")
+
+def showWindow(show=False):
     with dpg.window(label="Shuffle",tag="shuffle",show=show,autosize=True,on_close=destroy):
         with dpg.group(horizontal=True):
             dpg.add_button(label="Back",callback=backButton)
-            dpg.add_button(label="Play",callback=playPauseButton)
+            dpg.add_button(label="Play",tag="play",callback=playPauseButton)
             dpg.add_button(label="Forward",callback=forwardButton)
             dpg.add_button(label="Shuffle",callback=shuffleButton)
         dpg.add_slider_int(tag="vol",clamped=True,default_value=50,callback=volChange)
