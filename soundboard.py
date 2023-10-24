@@ -46,7 +46,7 @@ if (sbData["regenButtons"] == True):
         file.write(newData)
     pass
 
-def init(show=False):
+def showWindow(show=False):
     mixer.init()
     # Soundboard Window
     with dpg.window(label="Soundboard",tag="window",show=show,width=100,autosize=True,on_close=destroy):

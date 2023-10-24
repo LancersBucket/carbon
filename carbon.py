@@ -13,12 +13,13 @@ dpg.setup_dearpygui()
 def dynamicModuleImport(module_name):
    try:
       load_module = importlib.import_module(module_name)
-      
-      # Run module initilization
-      #load_module.init()
    except Exception as e:
-      print(e)
+      print("[CL] Error: "+str(e))
       return (False, None)
+   try:
+      load_module.init()
+   except:
+      print("[CL] Warning: Module \'" + module_name + "\' does not have an init function")
    return (True, load_module)
 
 # Generates an array of module data and human names
@@ -32,7 +33,7 @@ for module in config["modules"]:
 
 # Handles the regeneration of windows
 def window_handler():
-   loaded_modules[module_names.index(dpg.get_value("Modules"))].init(show=True)
+   loaded_modules[module_names.index(dpg.get_value("Modules"))].showWindow(show=True)
 
 # Main Carbon Loader Window. Helps open apps.
 with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=300):
