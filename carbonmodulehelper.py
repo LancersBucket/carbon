@@ -1,3 +1,4 @@
+import dearpygui.dearpygui as dpg
 import json
 
 def readConfig(moduleName: str) -> dict:
@@ -11,3 +12,7 @@ def readConfig(moduleName: str) -> dict:
 ## TODO, Write function
 def writeConfig(moduleName: str, key, operation, value=None):
     pass
+
+# Save window states
+def save() -> None:
+    dpg.save_init_file("dpg.ini")
