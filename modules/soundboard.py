@@ -1,6 +1,9 @@
-import math, json, os
+import json, os, sys
 from pygame import mixer
+from math import ceil, floor
 import dearpygui.dearpygui as dpg
+# Dirty fix to access cmh
+sys.path.append('../Carbon')
 import carbonmodulehelper as cmh
 
 # Soundboard song player (uses soundboard.json to locate files)
@@ -23,7 +26,10 @@ def volumeSoundboard():
 # Destroy function of window
 def destroy():
     mixer.quit()
-    dpg.delete_item("window")
+    dpg.delete_item("soundboard")
+
+def focusWindow():
+    dpg.focus_item("soundboard")
 
 def init():
     # Get soundboard config
@@ -31,6 +37,8 @@ def init():
     sbData = cmh.readConfig("soundboard")
     
     Data = cmh.readConfig("global")
+    
+    # This will need to be moved to cmh
     if (sbData["regenButtons"] == True):
         Data["modules"]["soundboard"]["regenButtons"] = False
         Data["modules"]["soundboard"].pop("buttons")
@@ -46,16 +54,15 @@ def init():
         with open('carbonConfig.json', 'w') as file:
             # write
             file.write(newData)
-        pass
 
 def showWindow(show=False):
     mixer.init()
     # Soundboard Window
-    with dpg.window(label="Soundboard",tag="window",show=show,width=100,autosize=True,on_close=destroy):
-        width = 6
+    with dpg.window(label="Soundboard",tag="soundboard",show=show,width=100,autosize=True,on_close=destroy):
+        width = sbData["buttonsPerRow"]
         total_length = len(sbData["buttons"])
         # Calculaltes how many rows are needed with given length
-        rows = math.ceil(total_length / width)
+        rows = ceil(total_length / width)
         
         # Creates groups to put buttons
         groups = []
@@ -65,7 +72,7 @@ def showWindow(show=False):
         # Adds buttons to each row, overflows to next row if space is needed
         for i in range(total_length):
             button = sbData["buttons"][i]
-            currentRow = math.floor(i/(width))
+            currentRow = floor(i/(width))
             dpg.add_button(label=button["label"], callback=soundboard, height=75, width=150, tag="button"+str(button["id"]),parent=groups[currentRow])
         
         # Stop and volume slider

@@ -1,8 +1,13 @@
 {
+    "carbon": {
+        "moduleLoader": "Carbon Loader",
+        "moduleFolder": "modules"
+    },
     "modules": {
         "soundboard": {
             "show": true,
             "soundFolder": "files",
+            "buttonsPerRow": 6,
             "regenButtons": false,
             "buttons": [
                 {

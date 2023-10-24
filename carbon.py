@@ -12,7 +12,7 @@ dpg.setup_dearpygui()
 # Module Loader
 def dynamicModuleImport(module_name):
    try:
-      load_module = importlib.import_module(module_name)
+      load_module = importlib.import_module(config["carbon"]["moduleFolder"]+"."+module_name)
    except Exception as e:
       print("[CL] Error: "+str(e))
       return (False, None)
@@ -33,21 +33,35 @@ for module in config["modules"]:
 
 # Handles the regeneration of windows
 def window_handler():
-   loaded_modules[module_names.index(dpg.get_value("Modules"))].showWindow(show=True)
+   if (not dpg.does_item_exist(dpg.get_value("Modules"))):
+      loaded_modules[module_names.index(dpg.get_value("Modules"))].showWindow(show=True)
+   else:
+      loaded_modules[module_names.index(dpg.get_value("Modules"))].focusWindow()
+
+# Load config file
+#dpg.configure_app(init_file="dpg.ini")
+
+# Supposed to lock window within viewport, will need to integrate and iterate
+#def onMove():
+#   dpg.set_item_pos("CL", [max(0,dpg.get_item_pos("CL")[0]),max(0,dpg.get_item_pos("CL")[1])])
 
 # Main Carbon Loader Window. Helps open apps.
-with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=300,on_close=dpg.delete_item("CL"),no_close=True):
+with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
    dpg.add_text("Carbon")
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler)
+   dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
+   dpg.add_text("DearPyGui: v" + str(dpg.get_dearpygui_version()))
+   dpg.add_text("Carbon Loader: v0.1")
 
 def showCarbonLoader(sender):
    dpg.focus_item("CL")
+   dpg.set_item_pos("CL",[0,0])
 
 def showDemo():
    demo.show_demo()
 
 with dpg.viewport_menu_bar():
-   dpg.add_menu_item(label="Carbon Loader", tag="Carbon Loader", callback=showCarbonLoader)
+   dpg.add_menu_item(label=config["carbon"]["moduleLoader"], tag="Loader", callback=showCarbonLoader)
    dpg.add_menu_item(label="Demo Menu", tag="Demo Menu", callback=showDemo)
 
 dpg.show_viewport()
