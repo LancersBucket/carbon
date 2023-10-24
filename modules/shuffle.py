@@ -15,12 +15,13 @@ def playsong():
     global queue
     global currentPos
     global playing
+    global config
     try:
         # Gets the name of the file in the queue displays what is currently playing
         name = queue[currentPos]
-        showMessage("[" + str(currentPos+1)+"/"+str(len(queue))+"] " + name[0:-4])
+        showMessage("[" + str(currentPos+1)+"/"+str(len(queue))+"] " + name.split(" [")[0])
         # Loads the music and plays it
-        mixer.music.load('music/'+name)
+        mixer.music.load(config["musicFolder"]+ '/'+name)
         mixer.music.set_volume(dpg.get_value("vol")/100)
         mixer.music.play()
     except:
@@ -37,7 +38,7 @@ def playPauseButton():
             if (paused):
                 mixer.music.unpause()
                 name = queue[currentPos]
-                showMessage("[" + str(currentPos+1)+"/"+str(len(queue))+"] " + name[0:-4])
+                showMessage("[" + str(currentPos+1)+"/"+str(len(queue))+"] " + name.split(" [")[0])
                 paused = False
             else:
                 playsong()
@@ -86,9 +87,9 @@ def shuffleButton():
     mixer.music.stop()
 
     queue = []
-    songs = os.listdir('music')
+    songs = os.listdir(config["musicFolder"])
     for song in songs:
-        if (song.endswith(".mp3")):
+        if (song.endswith((".mp3",".mid",".wav"))):
             queue.append(song)
 
     shuffle(queue)
@@ -128,9 +129,9 @@ def showWindow(show=False):
 
     mixer.init()
     # Loads files into the queue
-    if (not os.path.isdir('music')):
-        os.mkdir('music')
-    songs = os.listdir('music')
+    if (not os.path.isdir(config["musicFolder"])):
+        os.mkdir(config["musicFolder"])
+    songs = os.listdir(config["musicFolder"])
     for song in songs:
         if (song.endswith((".mp3",".mid",".wav"))):
             queue.append(song)

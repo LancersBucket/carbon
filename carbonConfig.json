@@ -29,7 +29,8 @@
             ]
         },
         "shuffle": {
-            "show": true
+            "show": true,
+            "musicFolder": "files"
         }
     }
 }

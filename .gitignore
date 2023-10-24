@@ -1,6 +1,3 @@
-files/*
+files
 __pycache__
 .vscode
-tmp
-config.ini
-music
