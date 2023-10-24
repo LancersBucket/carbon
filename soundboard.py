@@ -28,7 +28,7 @@ sbData = sbData["modules"]["soundboard"]
 
 def init(show=True):
     # Soundboard Window
-    with dpg.window(label="Soundboard",show=show):
+    with dpg.window(label="Soundboard",tag="window",show=show,width=100,autosize=True,on_close=dpg.delete_item("window")):
         width = 6
         total_length = len(sbData["buttons"])
         # Calculaltes how many rows are needed with given length

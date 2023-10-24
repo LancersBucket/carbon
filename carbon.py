@@ -20,9 +20,24 @@ def dynamic_module_import(module_name):
       load_module.init()
    except Exception as e:
       print(e)
+      return (False, None)
+   return (True, load_module)
 
+loaded_modules = []
+module_names = []
 for module in config["modules"]:
-   dynamic_module_import(module)
+   out = dynamic_module_import(module)
+   if (out[0]):
+      loaded_modules.append(out[1])
+      module_names.append(module)
+
+def window_handler(windowName):
+   loaded_modules[module_names.index(dpg.get_value("Modules"))].init()
+
+
+with dpg.window(label="Carbon Loader",show=True,no_open_over_existing_popup=False,width=200,height=300):
+   dpg.add_text("Carbon")
+   dpg.add_listbox(module_names,id="Modules",callback=window_handler)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
