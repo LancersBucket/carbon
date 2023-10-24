@@ -2,6 +2,7 @@
     "modules": {
         "soundboard": {
             "show": true,
+            "soundFolder": "files",
             "regenConfig": false,
             "buttons": [
                 {

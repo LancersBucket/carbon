@@ -8,5 +8,6 @@ def readConfig(moduleName):
     else:
         return Data
 
+## TODO, Write function
 def writeConfig(moduleName, key, operation, value=None):
     pass

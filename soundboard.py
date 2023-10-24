@@ -9,7 +9,7 @@ mixer.init()
 def soundboard(sender):
     # Super brutal way to rip the numbers out of the id but it works
     soundid = int("".join(filter(str.isnumeric,sender)))
-    mixer.music.load('files/'+sbData["buttons"][soundid]["file"])
+    mixer.music.load(sbData["soundFolder"]+'/'+sbData["buttons"][soundid]["file"])
     mixer.music.play()
 
 # Stops the soundboard
@@ -21,6 +21,11 @@ def volumeSoundboard():
     vol = dpg.get_value(volumeSlider)
     vol /= 100
     mixer.music.set_volume(vol)
+
+# Destroy function of window
+def destroy():
+    mixer.quit()
+    dpg.delete_item("window")
 
 # Get soundboard config
 sbData = cmh.readConfig("soundboard")
@@ -45,7 +50,7 @@ if (sbData["regenConfig"] == True):
 
 def init(show=False):
     # Soundboard Window
-    with dpg.window(label="Soundboard",tag="window",show=show,width=100,autosize=True,on_close=dpg.delete_item("window")):
+    with dpg.window(label="Soundboard",tag="window",show=show,width=100,autosize=True,on_close=destroy):
         width = 6
         total_length = len(sbData["buttons"])
         # Calculaltes how many rows are needed with given length
