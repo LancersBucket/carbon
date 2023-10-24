@@ -60,7 +60,7 @@ def init(show=True):
         for i in range(total_length):
             button = sbData["buttons"][i]
             currentRow = math.floor(i/(width))
-            dpg.add_button(label=button["label"], callback=soundboard, height=75, width=75, tag="button"+str(button["id"]),parent=groups[currentRow])
+            dpg.add_button(label=button["label"], callback=soundboard, height=75, width=150, tag="button"+str(button["id"]),parent=groups[currentRow])
         
         # Stop and volume slider
         dpg.add_button(label="Stop", callback=stopSoundboard)
