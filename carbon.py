@@ -1,8 +1,8 @@
 import dearpygui.dearpygui as dpg
 import dearpygui.demo as demo
 import carbonmodulehelper as cmh
-import importlib
 from pygame import mixer
+import importlib
 
 config = cmh.readConfig("global")
 
@@ -27,6 +27,11 @@ def dynamicModuleImport(module_name):
 loaded_modules = []
 module_names = []
 for module in config["modules"]:
+   try:
+      if (config["modules"][module]["enable"] == False):
+         continue
+   except:
+      pass
    out = dynamicModuleImport(module)
    if (out[0]):
       loaded_modules.append(out[1])

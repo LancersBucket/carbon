@@ -29,8 +29,12 @@
             ]
         },
         "shuffle": {
-            "show": true,
+            "show": false,
             "musicFolder": "files"
+        },
+        "al": {
+            "enable": false,
+            "show": false
         }
     }
 }

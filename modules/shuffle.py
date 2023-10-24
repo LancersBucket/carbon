@@ -1,6 +1,5 @@
 from pygame import mixer
-from pygame import time
-import sys, os, random, configparser, yt_dlp
+import sys, os, random
 sys.path.append('../Carbon')
 import carbonmodulehelper as cmh
 import dearpygui.dearpygui as dpg
@@ -114,8 +113,6 @@ def init():
     playing = False
     global paused
     paused = False
-    showWindow(True)
-    dpg.focus_item("shuffle")
 
 def showWindow(show=False):
     with dpg.window(label="Shuffle",tag="shuffle",show=show,autosize=True,on_close=destroy):
