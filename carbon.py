@@ -42,12 +42,10 @@ with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_p
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler)
 
 def showCarbonLoader(sender):
-    print(f"Menu Item: {sender}")
-    dpg.focus_item("CL")
+   dpg.focus_item("CL")
 
 with dpg.viewport_menu_bar():
-    with dpg.menu(label="File"):
-        dpg.add_menu_item(label="Carbon Loader", callback=showCarbonLoader)
+   dpg.add_menu_item(label="Carbon Loader", callback=showCarbonLoader)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
