@@ -25,26 +25,28 @@ def destroy():
     mixer.quit()
     dpg.delete_item("window")
 
-# Get soundboard config
-sbData = cmh.readConfig("soundboard")
-Data = cmh.readConfig("global")
-
-if (sbData["regenButtons"] == True):
-    Data["modules"]["soundboard"]["regenButtons"] = False
-    Data["modules"]["soundboard"].pop("buttons")
-    Data["modules"]["soundboard"]["buttons"] = []
+def init():
+    # Get soundboard config
+    global sbData
+    sbData = cmh.readConfig("soundboard")
     
-    counter = 0
-    for f in os.listdir("files"):
-        Data["modules"]["soundboard"]["buttons"].append({"id":counter,"label":f.split(" [")[0],"file":f})
-        counter += 1
+    Data = cmh.readConfig("global")
+    if (sbData["regenButtons"] == True):
+        Data["modules"]["soundboard"]["regenButtons"] = False
+        Data["modules"]["soundboard"].pop("buttons")
+        Data["modules"]["soundboard"]["buttons"] = []
+        
+        counter = 0
+        for f in os.listdir("files"):
+            Data["modules"]["soundboard"]["buttons"].append({"id":counter,"label":f.split(" [")[0],"file":f})
+            counter += 1
 
-    newData = json.dumps(Data, indent=4)
+        newData = json.dumps(Data, indent=4)
 
-    with open('carbonConfig.json', 'w') as file:
-        # write
-        file.write(newData)
-    pass
+        with open('carbonConfig.json', 'w') as file:
+            # write
+            file.write(newData)
+        pass
 
 def showWindow(show=False):
     mixer.init()
