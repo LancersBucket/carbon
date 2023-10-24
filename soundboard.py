@@ -1,6 +1,7 @@
 from pygame import mixer
 import math, json, os
 import dearpygui.dearpygui as dpg
+import carbonmodulehelper as cmh
 
 mixer.init()
 
@@ -22,9 +23,8 @@ def volumeSoundboard():
     mixer.music.set_volume(vol)
 
 # Get soundboard config
-sbConf = open("carbonConfig.json")
-Data = json.load(sbConf)
-sbData = Data["modules"]["soundboard"]
+sbData = cmh.readConfig("soundboard")
+Data = cmh.readConfig("global")
 
 if (sbData["regenConfig"] == True):
     Data["modules"]["soundboard"]["regenConfig"] = False
