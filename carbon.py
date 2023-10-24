@@ -1,6 +1,7 @@
 import math, json
 import sys
 import dearpygui.dearpygui as dpg
+import dearpygui.demo as demo
 from pygame import mixer
 import importlib
 
@@ -34,7 +35,7 @@ for module in config["modules"]:
 
 # Handles the regeneration of windows
 def window_handler():
-   loaded_modules[module_names.index(dpg.get_value("Modules"))].init()
+   loaded_modules[module_names.index(dpg.get_value("Modules"))].init(show=True)
 
 # Main Carbon Window. Helps open apps.
 with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=300):
@@ -44,8 +45,12 @@ with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_p
 def showCarbonLoader(sender):
    dpg.focus_item("CL")
 
+def showDemo():
+   demo.show_demo()
+
 with dpg.viewport_menu_bar():
    dpg.add_menu_item(label="Carbon Loader", callback=showCarbonLoader)
+   dpg.add_menu_item(label="Demo Menu", callback=showDemo)
 
 dpg.show_viewport()
 dpg.start_dearpygui()

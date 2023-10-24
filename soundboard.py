@@ -43,7 +43,7 @@ if (sbData["regenConfig"] == True):
         file.write(newData)
     pass
 
-def init(show=True):
+def init(show=False):
     # Soundboard Window
     with dpg.window(label="Soundboard",tag="window",show=show,width=100,autosize=True,on_close=dpg.delete_item("window")):
         width = 6

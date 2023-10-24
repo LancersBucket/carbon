@@ -1,8 +1,5 @@
 {
     "modules": {
-        "main": {
-            "show": true
-        },
         "soundboard": {
             "show": true,
             "regenConfig": false,
