@@ -3,8 +3,6 @@ import math, json, os
 import dearpygui.dearpygui as dpg
 import carbonmodulehelper as cmh
 
-mixer.init()
-
 # Soundboard song player (uses soundboard.json to locate files)
 def soundboard(sender):
     # Super brutal way to rip the numbers out of the id but it works
@@ -49,6 +47,7 @@ if (sbData["regenConfig"] == True):
     pass
 
 def init(show=False):
+    mixer.init()
     # Soundboard Window
     with dpg.window(label="Soundboard",tag="window",show=show,width=100,autosize=True,on_close=destroy):
         width = 6

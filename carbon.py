@@ -15,7 +15,7 @@ def dynamicModuleImport(module_name):
       load_module = importlib.import_module(module_name)
       
       # Run module initilization
-      load_module.init()
+      #load_module.init()
    except Exception as e:
       print(e)
       return (False, None)
