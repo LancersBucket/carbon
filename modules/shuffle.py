@@ -41,12 +41,12 @@ def playPauseButton():
                 paused = False
             else:
                 playsong()
-            dpg.set_value("play","Pause")
+            dpg.set_item_label("play","Pause")
         else:
             playing = False
             paused = True
             mixer.music.pause()
-            dpg.set_value("play","Play")
+            dpg.set_item_label("play","Play")
             showMessage("Paused")
     except:
         showMessage("Cannot play, no songs are loaded.")
@@ -132,7 +132,7 @@ def showWindow(show=False):
         os.mkdir('music')
     songs = os.listdir('music')
     for song in songs:
-        if (song.endswith(".mp3")):
+        if (song.endswith((".mp3",".mid",".wav"))):
             queue.append(song)
 
     shuffle(queue)

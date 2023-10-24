@@ -19,8 +19,8 @@ def dynamicModuleImport(module_name):
       return (False, None)
    try:
       load_module.init()
-   except:
-      print("[CL] Warning: Module \'" + module_name + "\' does not have an init function")
+   except Exception as e:
+      print("[CL] Error from module \'" +module_name+ "\': " + str(e))
    return (True, load_module)
 
 # Generates an array of module data and human names
