@@ -1,7 +1,7 @@
 {
     "modules": {
         "main": {
-
+            "show": true
         },
         "soundboard": {
             "show": true,
