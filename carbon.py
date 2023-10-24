@@ -46,7 +46,9 @@ def window_handler():
 #   dpg.set_item_pos("CL", [max(0,dpg.get_item_pos("CL")[0]),max(0,dpg.get_item_pos("CL")[1])])
 
 # Main Carbon Loader Window. Helps open apps.
-with dpg.window(label="Carbon Loader",tag="CL",show=True,no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
+# Eventually I want to move CL to a seperate module but here it will stay
+showCL = config["carbon"]["devMode"]
+with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL, show=True,no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
    dpg.add_text("Carbon")
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler)
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
