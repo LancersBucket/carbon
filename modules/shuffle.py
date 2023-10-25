@@ -1,3 +1,6 @@
+# TODO: Update shuffle to use mixer functions instead of custom functions
+# https://www.pygame.org/docs/ref/music.html#module-pygame.mixer.music
+# TODO: Add D&D Sound Module (Mythril)
 from pygame import mixer
 import sys, os, random
 sys.path.append('../Carbon')
