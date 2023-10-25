@@ -16,6 +16,7 @@ currentSong = ""
 alive = True
 shuffle = False
 songLength = -1
+wantToSwap = False
 
 def showMessage(msg):
     dpg.set_value("status",msg)
@@ -23,23 +24,32 @@ def showMessage(msg):
 def forwardButton():
     global currentBank
     global currentSong
-    mixer.music.stop()
-    currentBankItems = dpg.get_item_user_data(currentBank+"List")
-    index = currentBankItems.index(currentSong)
-    if (not shuffle):
-        if ((index + 1) > len(currentBankItems)-1):
-            index = 0
+    global wantToSwap
+    wantToSwap = False
+    if (not loop):
+        try:
+            mixer.music.stop()
+        except:
+            pass
+        currentBankItems = dpg.get_item_user_data(currentBank+"List")
+        index = currentBankItems.index(currentSong)
+        if (not shuffle):
+            if ((index + 1) > len(currentBankItems)-1):
+                index = 0
+            else:
+                index += 1
         else:
-            index += 1
-    else:
-        index = random.randrange(0, len(currentBankItems)-1)
-    newSong = currentBankItems[index]
-    dpg.set_value(currentBank+"List",newSong)
-    playPauseButton()
+            index = random.randrange(0, len(currentBankItems)-1)
+        newSong = currentBankItems[index]
+        dpg.set_value(currentBank+"List",newSong)
+        currentSong = newSong
+        playPauseButton()
 
 def backButton():
     global currentBank
     global currentSong
+    global wantToSwap
+    wantToSwap = False
     mixer.music.stop()
     currentBankItems = dpg.get_item_user_data(currentBank+"List")
     index = currentBankItems.index(currentSong)
@@ -50,6 +60,7 @@ def backButton():
         index -= 1
     newSong = currentBankItems[index]
     dpg.set_value(currentBank+"List",newSong)
+    currentSong = newSong
     playPauseButton()
 
 def playSong():
@@ -60,6 +71,7 @@ def playSong():
     global currentBank
     global currentSong
     global songLength
+    global wantToSwap
     try:
         currentSong = dpg.get_value(currentBank+"List")
         mixer.music.unload()
@@ -69,8 +81,8 @@ def playSong():
         volChange()
         song = MP3(config["musicFolder"]+ '/'+currentBank+'/'+currentSong)
         songLength = song.info.length*1000
-        print(songLength)
         mixer.music.play(fade_ms=(int(fade)*config["fadeTimeMS"]))
+        wantToSwap = True
 
     except Exception as e:
         showMessage("Error: No songs are loaded.")
@@ -84,7 +96,6 @@ def playPauseButton(swapState = False):
         if not playing:
             playing = True
             if (paused):
-                print("nowPlaying")
                 mixer.music.unpause()
                 paused = False
                 showMessage("Now playing: " + currentSong)
@@ -108,11 +119,13 @@ def volChange():
 
 def selectBank(sender=""):
     global paused
-    paused = True
+    paused = False
     global playing
     playing = False
     global currentBank
     global currentSong
+    global wantToSwap
+    wantToSwap = False
     if (fade):
         showMessage("Fading Song...")
         mixer.music.fadeout(config["fadeTimeMS"])
@@ -121,6 +134,7 @@ def selectBank(sender=""):
     mixer.music.unload()
     dpg.set_item_label("play","Play")
     if (not currentBank == ""):
+        dpg.set_value(currentBank+"List",currentSong)
         dpg.configure_item(currentBank+"Text",color=(255,0,0,255))
     item = sender.split("Button")
     currentBank = item[0]
@@ -128,7 +142,6 @@ def selectBank(sender=""):
     dpg.configure_item(item[0]+"Text",color=(0,255,0,255))
     showMessage("Selected bank: " + currentBank)
     currentSong = currentBankItems[0]
-    paused = False
 
 def checkStatus():
     global playing
@@ -143,8 +156,7 @@ def checkStatus():
             pass
 
         for event in pygame.event.get():
-            if event.type == SONGEND:
-                print("did somethin")
+            if event.type == SONGEND and wantToSwap:
                 playing = False
                 paused = False
                 try:
@@ -154,8 +166,7 @@ def checkStatus():
                 if (not loop):
                     forwardButton()
                 else:
-                    playPauseButton()
-                
+                    playPauseButton()         
 
 def destroy():
     global t1
@@ -200,9 +211,13 @@ def flipShuffle():
     global shuffle
     shuffle = not shuffle
 
-def swapSong():
-    pass
-
+def swapSong(sender):
+    global wantToSwap
+    global currentSong
+    wantToSwap = False
+    currentSong = dpg.get_value(sender)
+    selectBank(sender.split("List")[0])
+    
 def showWindow(show=False):
     global tags
     global currentBank
@@ -225,8 +240,8 @@ def showWindow(show=False):
         dpg.add_slider_int(tag="vol",clamped=True,default_value=50,callback=volChange)
         dpg.add_slider_float(tag="seek",clamped=True,no_input=True)
         with dpg.group(horizontal=True):
-            dpg.add_checkbox(label="Loop Current Song",callback=flipLoop)
             dpg.add_checkbox(label="Fade Between Songs",callback=flipFade)
+            dpg.add_checkbox(label="Loop Current Song",callback=flipLoop)
             dpg.add_checkbox(label="Shuffle",callback=flipShuffle)
 
         width = 2
