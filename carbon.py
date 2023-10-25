@@ -54,12 +54,14 @@ def window_handler():
 # Main Carbon Loader Window. Helps open apps.
 # Eventually I want to move CL to a seperate module but here it will stay
 showCL = config["carbon"]["devMode"]
-with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL, show=True,no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
-   dpg.add_text("Carbon")
-   dpg.add_listbox(module_names,tag="Modules",callback=window_handler)
+with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not showCL),no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
+   #with dpg.group(horizontal=True):
+   #   dpg.add_loading_indicator(circle_count=6)
+   #   dpg.add_text("Carbon Loader v1.0")
+   dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15)
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
    dpg.add_text("DearPyGui: v" + str(dpg.get_dearpygui_version()))
-   dpg.add_text("Carbon Loader: v0.1")
+   dpg.add_text("Carbon Loader: v1.1")
 
 def showCarbonLoader(sender):
    dpg.focus_item("CL")
