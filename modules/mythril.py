@@ -18,10 +18,12 @@ shuffle = False
 songLength = -1
 wantToSwap = False
 
+# Helper function to show a status message in the status bar
 def showMessage(msg):
     dpg.set_value("status",msg)
 
-def forwardButton():
+# Forward button
+def forwardButton(autoplay=False):
     global currentBank
     global currentSong
     global wantToSwap
@@ -31,12 +33,15 @@ def forwardButton():
     global paused
     paused = False
     if (not loop):
+        # Try it.
         try:
             mixer.music.stop()
+        # Oh no! Anyway...
         except:
             pass
         currentBankItems = dpg.get_item_user_data(currentBank+"List")
         index = currentBankItems.index(currentSong)
+        # Either increments the index by one or shuffles it, depending on the setting
         if (not shuffle):
             if ((index + 1) > len(currentBankItems)-1):
                 index = 0
@@ -46,10 +51,12 @@ def forwardButton():
             index = random.randrange(0, len(currentBankItems)-1)
         newSong = currentBankItems[index]
         dpg.set_value(currentBank+"List",newSong)
-        #playPauseButton()
         currentSong = newSong
         dpg.configure_item("play",label="Play")
+        if (autoplay):
+            playPauseButton()
 
+# Back Button, same thing as forward button but in reverse
 def backButton():
     global currentBank
     global currentSong
@@ -74,6 +81,7 @@ def backButton():
     currentSong = newSong
     dpg.configure_item("play",label="Play") 
 
+# Plays the song by handling loading it and volume change and such
 def playSong():
     global queue
     global currentPos
@@ -99,7 +107,8 @@ def playSong():
         showMessage("Error: No songs are loaded.")
         print(e)
 
-def playPauseButton(swapState = False):
+# Play pause button
+def playPauseButton():
     try:
         global playing
         global paused
@@ -128,6 +137,7 @@ def playPauseButton(swapState = False):
 def volChange():
     mixer.music.set_volume(dpg.get_value("vol")/100)
 
+# Handles selecting a song bank to play from
 def selectBank(sender=""):
     global paused
     paused = False
@@ -154,6 +164,7 @@ def selectBank(sender=""):
     showMessage("Selected bank: " + currentBank)
     currentSong = currentBankItems[0]
 
+# checkStatus thread that monitors for the end of a song
 def checkStatus():
     global playing
     global paused
@@ -178,10 +189,11 @@ def checkStatus():
                 except:
                     pass
                 if (not loop):
-                    forwardButton()
+                    forwardButton(autoplay=True)
                 else:
                     playPauseButton()         
 
+# Destroy function, common to all modules
 def destroy():
     global t1
     global alive
@@ -209,22 +221,23 @@ def init():
     pygame.init()
     showWindow(True)
     dpg.focus_item("mythril")
+    # Creates the monitor thread and starts it
     global t1
     t1 = threading.Thread(target=checkStatus,args=(),daemon=True)
     t1.start()
 
+# Helper variable functions
 def flipFade():
     global fade 
     fade = not fade
-
 def flipLoop():
     global loop
     loop = not loop
-
 def flipShuffle():
     global shuffle
     shuffle = not shuffle
 
+# Automatically swaps the bank if an item is selected in the listbox
 def swapSong(sender):
     global wantToSwap
     global currentSong
@@ -232,13 +245,14 @@ def swapSong(sender):
     currentSong = dpg.get_value(sender)
     selectBank(sender.split("List")[0])
 
+# Main function
 def showWindow(show=False):
     global tags
     global currentBank
     global fade
 
     mixer.init()
-    # Loads files into the queue
+    # Loads categories
     if (not os.path.isdir(config["musicFolder"])):
         os.mkdir(config["musicFolder"])
     folders = os.listdir(config["musicFolder"])
@@ -268,7 +282,7 @@ def showWindow(show=False):
         for i in range(rows):
             groups.append(dpg.add_group(horizontal=True))
 
-        # Adds buttons to each row, overflows to next row if space is needed
+        # Adds listboxes to each row, overflows to next row if space is needed
         for i in range(total_length):
             label = tags[i]
             currentRow = floor(i/(width))
@@ -277,7 +291,8 @@ def showWindow(show=False):
             tagSongs = []
             for song in os.listdir(config["musicFolder"]+"/"+label):
                 tagSongs.append(song)
-            dpg.add_listbox(tagSongs,parent=label,tag=(label+"List"),user_data=tagSongs,callback=swapSong)
+            dpg.add_listbox(tagSongs,parent=label,tag=(label+"List"),user_data=tagSongs)#,callback=swapSong)
             dpg.add_button(label="Select",parent=label,tag=(label+"Button"),callback=selectBank)
         dpg.add_text("HELP",tag="status")
+        # Loads first bank
         selectBank(tags[0])
