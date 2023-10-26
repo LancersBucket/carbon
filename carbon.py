@@ -1,11 +1,8 @@
-import os
-import sys
+import os, sys, importlib, mutagen
 import dearpygui.dearpygui as dpg
 import dearpygui.demo as demo
 import carbonmodulehelper as cmh
 from pygame import mixer
-import importlib
-import mutagen
 
 config = cmh.readConfig("global")
 sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])

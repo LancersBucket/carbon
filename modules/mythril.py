@@ -1,12 +1,10 @@
-import sys, random, os
+import sys, random, os, threading, pygame
 from math import ceil, floor
 from time import sleep
 from pygame import mixer, USEREVENT
 sys.path.append('../Carbon')
 import carbonmodulehelper as cmh
 import dearpygui.dearpygui as dpg
-import threading
-import pygame
 from mutagen.mp3 import MP3
 
 loop = False
@@ -48,7 +46,7 @@ def forwardButton(autoplay=False,Bastard=False):
         newSong = currentBankItems[index]
         dpg.set_value(currentBank+"List",newSong)
         currentSong = newSong
-        dpg.configure_item("play",label="Play")
+        dpg.configure_item("mythrilPlay",label="Play")
         if (autoplay):
             playPauseButton()
 
@@ -75,7 +73,7 @@ def backButton():
     dpg.set_value(currentBank+"List",newSong)
     #playPauseButton()
     currentSong = newSong
-    dpg.configure_item("play",label="Play") 
+    dpg.configure_item("mythrilPlay",label="Play") 
 
 # Plays the song by handling loading it and volume change and such
 def playSong():
@@ -119,19 +117,19 @@ def playPauseButton():
                 mixer.music.unload()
                 playSong()
                 showMessage("Now playing: " + currentSong)
-            dpg.set_item_label("play","Pause")
+            dpg.set_item_label("mythrilPlay","Pause")
         else:
             playing = False
             paused = True
             mixer.music.pause()
-            dpg.set_item_label("play","Play")
+            dpg.set_item_label("mythrilPlay","Play")
             showMessage("Paused")
     except:
         showMessage("Cannot play, no songs are loaded.")
 
 # Monitors volume change
 def volChange():
-    mixer.music.set_volume(dpg.get_value("vol")/100)
+    mixer.music.set_volume(dpg.get_value("mythrilVol")/100)
 
 # Handles selecting a song bank to play from
 def selectBank(sender=""):
@@ -149,7 +147,7 @@ def selectBank(sender=""):
     else:
         mixer.music.stop()
     mixer.music.unload()
-    dpg.set_item_label("play","Play")
+    dpg.set_item_label("mythrilPlay","Play")
     if (not currentBank == ""):
         dpg.set_value(currentBank+"List",currentSong)
         dpg.configure_item(currentBank+"Text",color=(255,0,0,255))
@@ -169,10 +167,10 @@ def checkStatus():
         sleep(0.1)
         try:
             if (playing):
-                dpg.set_value("seek",pygame.mixer.music.get_pos())
-                dpg.configure_item("seek",max_value=songLength)
+                dpg.set_value("mythrilSeek",pygame.mixer.music.get_pos())
+                dpg.configure_item("mythrilSeek",max_value=songLength)
             else:
-                dpg.set_value("seek",-1)
+                dpg.set_value("mythrilSeek",-1)
         except:
             pass
 
@@ -260,10 +258,10 @@ def showWindow(show=False):
     with dpg.window(label="Mythril",tag="mythril",show=show,autosize=True,on_close=destroy):
         with dpg.group(horizontal=True):
             dpg.add_button(label="Back",callback=backButton)
-            dpg.add_button(label="Play",tag="play",callback=playPauseButton)
+            dpg.add_button(label="Play",tag="mythrilPlay",callback=playPauseButton)
             dpg.add_button(label="Forward",callback=forwardButton)
-        dpg.add_slider_int(tag="vol",clamped=True,default_value=50,callback=volChange)
-        dpg.add_slider_float(tag="seek",clamped=True,no_input=True)
+        dpg.add_slider_int(tag="mythrilVol",clamped=True,default_value=50,callback=volChange)
+        dpg.add_slider_float(tag="mythrilSeek",clamped=True,no_input=True)
         with dpg.group(horizontal=True):
             dpg.add_checkbox(label="Fade Between Songs",callback=flipFade)
             dpg.add_checkbox(label="Loop Current Song",callback=flipLoop)
