@@ -26,6 +26,10 @@ def forwardButton():
     global currentSong
     global wantToSwap
     wantToSwap = False
+    global playing
+    playing = False
+    global paused
+    paused = False
     if (not loop):
         try:
             mixer.music.stop()
@@ -42,14 +46,20 @@ def forwardButton():
             index = random.randrange(0, len(currentBankItems)-1)
         newSong = currentBankItems[index]
         dpg.set_value(currentBank+"List",newSong)
+        #playPauseButton()
         currentSong = newSong
-        playPauseButton()
+        dpg.configure_item("play",label="Play")
 
 def backButton():
     global currentBank
     global currentSong
     global wantToSwap
+    global playing
+    playing = False
+    global paused
+    paused = False
     wantToSwap = False
+    mixer.music.unload()
     mixer.music.stop()
     currentBankItems = dpg.get_item_user_data(currentBank+"List")
     index = currentBankItems.index(currentSong)
@@ -60,8 +70,9 @@ def backButton():
         index -= 1
     newSong = currentBankItems[index]
     dpg.set_value(currentBank+"List",newSong)
+    #playPauseButton()
     currentSong = newSong
-    playPauseButton()
+    dpg.configure_item("play",label="Play") 
 
 def playSong():
     global queue
@@ -150,8 +161,11 @@ def checkStatus():
     while alive:
         sleep(0.1)
         try:
-            dpg.set_value("seek",pygame.mixer.music.get_pos())
-            dpg.configure_item("seek",max_value=songLength)
+            if (playing):
+                dpg.set_value("seek",pygame.mixer.music.get_pos())
+                dpg.configure_item("seek",max_value=songLength)
+            else:
+                dpg.set_value("seek",-1)
         except:
             pass
 
@@ -217,7 +231,7 @@ def swapSong(sender):
     wantToSwap = False
     currentSong = dpg.get_value(sender)
     selectBank(sender.split("List")[0])
-    
+
 def showWindow(show=False):
     global tags
     global currentBank
