@@ -86,3 +86,4 @@ def showWindow(show=False):
         dpg.add_button(label="Stop", callback=stopSoundboard)
         global volumeSlider
         volumeSlider = dpg.add_slider_int(label="Volume",callback=volumeSoundboard,min_value=0,max_value=100,default_value=50,clamped=True)
+    dpg.set_item_pos("soundboard",[0,19])

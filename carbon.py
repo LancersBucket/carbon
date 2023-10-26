@@ -65,7 +65,8 @@ with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not showCL
 
 def showCarbonLoader(sender):
    dpg.focus_item("CL")
-   dpg.set_item_pos("CL",[0,0])
+   # Why is the menu bar only 18 px tall?
+   dpg.set_item_pos("CL",[0,19])
 
 def showDemo():
    demo.show_demo()

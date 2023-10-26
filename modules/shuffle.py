@@ -140,3 +140,4 @@ def showWindow(show=False):
     dpg.set_value("shuffleStatus","Ready. Queued " + str(len(queue)) + " songs.")
     if (queue == []):
         dpg.set_value("shuffleStatus","Error: No files found")
+    dpg.set_item_pos("shuffle",[0,19])

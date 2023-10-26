@@ -292,3 +292,4 @@ def showWindow(show=False):
             selectBank(tags[0])
         except:
             showMessage("No Banks Found. Verify folder structure and try again.")
+    dpg.set_item_pos("mythril",[0,19])
