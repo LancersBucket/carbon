@@ -23,7 +23,7 @@ def showMessage(msg):
     dpg.set_value("status",msg)
 
 # Forward button
-def forwardButton(autoplay=False):
+def forwardButton(autoplay=False,Bastard=False):
     global currentBank
     global currentSong
     global wantToSwap
@@ -33,12 +33,8 @@ def forwardButton(autoplay=False):
     global paused
     paused = False
     if (not loop):
-        # Try it.
-        try:
+        if (not Bastard):
             mixer.music.stop()
-        # Oh no! Anyway...
-        except:
-            pass
         currentBankItems = dpg.get_item_user_data(currentBank+"List")
         index = currentBankItems.index(currentSong)
         # Either increments the index by one or shuffles it, depending on the setting
@@ -189,6 +185,7 @@ def checkStatus():
                 except:
                     pass
                 if (not loop):
+                    backButton()
                     forwardButton(autoplay=True)
                 else:
                     playPauseButton()         
