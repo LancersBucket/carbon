@@ -1,10 +1,14 @@
+import os
+import sys
 import dearpygui.dearpygui as dpg
 import dearpygui.demo as demo
 import carbonmodulehelper as cmh
 from pygame import mixer
 import importlib
+import mutagen
 
 config = cmh.readConfig("global")
+sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])
 
 dpg.create_context()
 dpg.create_viewport(title='Carbon', width=700, height=600)
@@ -13,7 +17,7 @@ dpg.setup_dearpygui()
 # Module Loader
 def dynamicModuleImport(module_name):
    try:
-      load_module = importlib.import_module(config["carbon"]["moduleFolder"]+"."+module_name)
+      load_module = importlib.import_module(module_name,os.getcwd()+"\\"+config["carbon"]["moduleFolder"]+"\\")
    except Exception as e:
       print("[CL] Error: "+str(e))
       return (False, None)
@@ -55,13 +59,10 @@ def window_handler():
 # Eventually I want to move CL to a seperate module but here it will stay
 showCL = config["carbon"]["devMode"]
 with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not showCL),no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
-   #with dpg.group(horizontal=True):
-   #   dpg.add_loading_indicator(circle_count=6)
-   #   dpg.add_text("Carbon Loader v1.0")
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15)
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
    dpg.add_text("DearPyGui: v" + str(dpg.get_dearpygui_version()))
-   dpg.add_text("Carbon Loader: v1.1")
+   dpg.add_text("Carbon Loader: v1.5")
 
 def showCarbonLoader(sender):
    dpg.focus_item("CL")
@@ -82,4 +83,5 @@ try:
    mixer.quit()
 except:
    pass
-quit()
+finally:
+   sys.exit()

@@ -292,4 +292,7 @@ def showWindow(show=False):
             dpg.add_button(label="Select",parent=label,tag=(label+"Button"),callback=selectBank)
         dpg.add_text("HELP",tag="status")
         # Loads first bank
-        selectBank(tags[0])
+        try:
+            selectBank(tags[0])
+        except:
+            showMessage("No Banks Found. Verify folder structure and try again.")

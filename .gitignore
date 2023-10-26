@@ -3,3 +3,6 @@ __pycache__
 .vscode
 mythril
 *.bat
+build
+dist
+*.spec
