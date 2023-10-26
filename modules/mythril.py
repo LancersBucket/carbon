@@ -214,8 +214,6 @@ def init():
     global currentBank
     currentBank = ""
     pygame.init()
-    showWindow(True)
-    dpg.focus_item("mythril")
     # Creates the monitor thread and starts it
     global t1
     t1 = threading.Thread(target=checkStatus,args=(),daemon=True)
@@ -289,7 +287,7 @@ def showWindow(show=False):
             dpg.add_listbox(tagSongs,parent=label,tag=(label+"List"),user_data=tagSongs)#,callback=swapSong)
             dpg.add_button(label="Select",parent=label,tag=(label+"Button"),callback=selectBank)
         dpg.add_text("HELP",tag="status")
-        # Loads first bank
+        # Tries to load first bank
         try:
             selectBank(tags[0])
         except:

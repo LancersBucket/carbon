@@ -1,4 +1,4 @@
-import os, sys, importlib, mutagen
+import os, sys, importlib
 import dearpygui.dearpygui as dpg
 import dearpygui.demo as demo
 import carbonmodulehelper as cmh
@@ -34,6 +34,8 @@ for module in config["modules"]:
    except:
       pass
    out = dynamicModuleImport(module)
+   if (config["modules"][module]["show"]):
+      out[1].showWindow(True)
    if (out[0]):
       loaded_modules.append(out[1])
       module_names.append(module)
@@ -59,7 +61,7 @@ with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not showCL
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15)
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
    dpg.add_text("DearPyGui: v" + str(dpg.get_dearpygui_version()))
-   dpg.add_text("Carbon Loader: v1.5")
+   dpg.add_text("Carbon Loader: v1.5.1")
 
 def showCarbonLoader(sender):
    dpg.focus_item("CL")

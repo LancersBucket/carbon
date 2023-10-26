@@ -2,11 +2,11 @@
     "carbon": {
         "moduleLoader": "Carbon Loader",
         "moduleFolder": "modules",
-        "devMode": true
+        "devMode": false
     },
     "modules": {
         "soundboard": {
-            "show": true,
+            "show": false,
             "soundFolder": "files",
             "buttonsPerRow": 6,
             "regenButtons": false,
@@ -37,7 +37,7 @@
             "show": false
         },
         "mythril": {
-            "show": true,
+            "show": false,
             "musicFolder": "mythril",
             "fadeTimeMS": 2000
         }
