@@ -43,7 +43,8 @@
             "fadeTimeMS": 2000
         },
         "hirnanrn": {
-            "show": false
+            "show": false,
+            "numNames": 5
         }
     }
 }
