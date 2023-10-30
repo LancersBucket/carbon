@@ -41,6 +41,9 @@
             "show": false,
             "musicFolder": "mythril",
             "fadeTimeMS": 2000
+        },
+        "hirnanrn": {
+            "show": false
         }
     }
 }

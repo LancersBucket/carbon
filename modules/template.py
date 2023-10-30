@@ -1,3 +1,8 @@
+import sys
+sys.path.append('../Carbon')
+import carbonmodulehelper as cmh
+import dearpygui.dearpygui as dpg
+
 # Isn't needed but recomened to be set as the main window's on_close callback
 def destroy():
     # Typical use case: dpg.delete_item(windowName)

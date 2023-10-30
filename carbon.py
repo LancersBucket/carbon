@@ -4,14 +4,18 @@ import dearpygui.demo as demo
 import carbonmodulehelper as cmh
 from pygame import mixer
 
-depMode = False
-depMod = None
-
 config = cmh.readConfig("global")
-sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])
+
+depMode = False
+depModule = None
 if (config["carbon"]["depMode"] is not False or None):
    depMode = True
-   depMod = config["carbon"]["depMode"]
+   depModule = config["carbon"]["depMode"]
+
+showCL = config["carbon"]["devMode"]
+showCL = (showCL or depMode)
+
+sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])
 
 dpg.create_context()
 dpg.create_viewport(title='Carbon', width=700, height=600)
@@ -62,18 +66,15 @@ def window_handler():
 
 # Main Carbon Loader Window. Helps open apps.
 # Eventually I want to move CL to a seperate module but here it will stay
-showCL = config["carbon"]["devMode"]
-showCL = (showCL or depMode)
-print(showCL)
-with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not showCL),no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
-   dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15)
+with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not config["carbon"]["devMode"] or showCL),no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
+   dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15,num_items=len(loaded_modules))
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
    dpg.add_text("DearPyGui: v" + str(dpg.get_dearpygui_version()))
    dpg.add_text("Carbon Loader: v1.5.1")
 
-def showCarbonLoader(sender):
+def showCarbonLoader():
    dpg.focus_item("CL")
-   # Why is the menu bar only 18 px tall?
+   # Why is the menu bar only 18 px tall? Beats me.
    dpg.set_item_pos("CL",[0,19])
 
 def showDemo():
@@ -86,7 +87,7 @@ if (not depMode):
 
 dpg.show_viewport()
 if (depMode):
-   loaded_modules[module_names.index(depMod)].showWindow(show=True)
+   loaded_modules[module_names.index(depModule)].showWindow(show=True)
    dpg.set_primary_window(config["carbon"]["depMode"],True)
 dpg.start_dearpygui()
 dpg.destroy_context()
