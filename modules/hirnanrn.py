@@ -5,9 +5,14 @@ import dearpygui.dearpygui as dpg
 import names
 
 def generateNames():
+    maleNames = ""
+    femaleNames = ""
     for i in range(numNames):
-        dpg.set_value("male"+str(i),names.get_full_name('male'))
-        dpg.set_value("female"+str(i),names.get_full_name('female'))
+        maleNames += names.get_full_name('male') + "\n\n"
+        femaleNames += names.get_full_name('female') + "\n\n"
+        
+    dpg.set_value("male",maleNames)
+    dpg.set_value("female",femaleNames)
 
 # Isn't needed but recomened to be set as the main window's on_close callback
 def destroy():
@@ -31,12 +36,10 @@ def showWindow(show=False):
     with dpg.window(label="Help! I Really Need A Name Right Now!",tag="hirnanrn",show=show,autosize=True,on_close=destroy):
         #dpg.add_text("Help! I Really Need A Name Right Now!")
         dpg.add_text("Male:")
-        for i in range(numNames):
-            dpg.add_text(tag="male"+str(i))
+        dpg.add_text(tag="male")
         
-        dpg.add_text("\nFemale:")
-        for i in range(numNames):
-            dpg.add_text(tag="female"+str(i))
+        dpg.add_text("Female:")
+        dpg.add_text(tag="female")
 
         dpg.add_button(label="Regenerate",callback=generateNames)
 
