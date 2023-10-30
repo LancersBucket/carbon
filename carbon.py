@@ -43,7 +43,11 @@ for module in config["modules"]:
    except:
       pass
    out = dynamicModuleImport(module)
-   if (config["modules"][module]["show"]):
+   try:
+      showModuleDefault = config["modules"][module]["show"]
+   except:
+      showModuleDefault = False
+   if (showModuleDefault):
       out[1].showWindow(True)
    if (out[0]):
       loaded_modules.append(out[1])
