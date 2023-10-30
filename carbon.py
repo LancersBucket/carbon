@@ -8,11 +8,11 @@ config = cmh.readConfig("global")
 
 depMode = False
 depModule = None
-if (config["carbon"]["depMode"] is not False or None):
+if (cmh.readValue(config["carbon"],"depMode",False) is not False or None):
    depMode = True
    depModule = config["carbon"]["depMode"]
 
-showCL = (config["carbon"]["devMode"] or depMode)
+showCL = (cmh.readValue(config["carbon"],"devMode",False) or depMode)
 
 sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])
 
@@ -37,17 +37,11 @@ def dynamicModuleImport(module_name):
 loaded_modules = []
 module_names = []
 for module in config["modules"]:
-   try:
-      if (config["modules"][module]["enable"] == False):
-         continue
-   except:
-      pass
+   if (not cmh.readValue(config["modules"][module],"enable",failReturn=True)):
+      continue
    out = dynamicModuleImport(module)
-   try:
-      showModuleDefault = config["modules"][module]["show"]
-   except:
-      showModuleDefault = False
-   if (showModuleDefault):
+   
+   if (cmh.readValue(config["modules"][module],"show")):
       out[1].showWindow(True)
    if (out[0]):
       loaded_modules.append(out[1])
@@ -69,7 +63,7 @@ def window_handler():
 
 # Main Carbon Loader Window. Helps open apps.
 # Eventually I want to move CL to a seperate module but here it will stay
-with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not config["carbon"]["devMode"] or showCL),no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
+with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not showCL),no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15,num_items=len(loaded_modules))
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
    dpg.add_text("DearPyGui: v" + str(dpg.get_dearpygui_version()))

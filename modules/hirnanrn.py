@@ -38,3 +38,4 @@ def showWindow(show=False):
         dpg.add_button(label="Regenerate",callback=generateNames)
 
         generateNames()
+    dpg.set_item_pos("hirnanrn",[0,19])
