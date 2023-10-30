@@ -28,3 +28,10 @@ def isCarbonCore(moduleName: str) -> bool:
 
 def getCarbonCore() -> list[str]:
     return carbonCore
+
+def readValue(config: dict, configValue: str, failReturn=False):
+    try:
+        retVal = config[configValue]
+    except:
+        retVal = failReturn
+    return retVal
