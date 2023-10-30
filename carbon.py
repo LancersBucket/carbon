@@ -4,8 +4,14 @@ import dearpygui.demo as demo
 import carbonmodulehelper as cmh
 from pygame import mixer
 
+depMode = False
+depMod = None
+
 config = cmh.readConfig("global")
 sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])
+if (config["carbon"]["depMode"] is not False or None):
+   depMode = True
+   depMod = config["carbon"]["depMode"]
 
 dpg.create_context()
 dpg.create_viewport(title='Carbon', width=700, height=600)
@@ -57,6 +63,8 @@ def window_handler():
 # Main Carbon Loader Window. Helps open apps.
 # Eventually I want to move CL to a seperate module but here it will stay
 showCL = config["carbon"]["devMode"]
+showCL = (showCL or depMode)
+print(showCL)
 with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(not showCL),no_open_over_existing_popup=False,width=200,height=200,on_close=dpg.delete_item("CL"),no_close=True):
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15)
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
@@ -71,11 +79,15 @@ def showCarbonLoader(sender):
 def showDemo():
    demo.show_demo()
 
-with dpg.viewport_menu_bar():
-   dpg.add_menu_item(label=config["carbon"]["moduleLoader"], tag="Loader", callback=showCarbonLoader)
-   dpg.add_menu_item(label="Demo Menu", tag="Demo Menu", callback=showDemo)
+if (not depMode):
+   with dpg.viewport_menu_bar():
+      dpg.add_menu_item(label=config["carbon"]["moduleLoader"], tag="Loader", callback=showCarbonLoader)
+      dpg.add_menu_item(label="Demo Menu", tag="Demo Menu", callback=showDemo)
 
 dpg.show_viewport()
+if (depMode):
+   loaded_modules[module_names.index(depMod)].showWindow(show=True)
+   dpg.set_primary_window(config["carbon"]["depMode"],True)
 dpg.start_dearpygui()
 dpg.destroy_context()
 try:

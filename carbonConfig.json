@@ -2,7 +2,8 @@
     "carbon": {
         "moduleLoader": "Carbon Loader",
         "moduleFolder": "modules",
-        "devMode": false
+        "devMode": false,
+        "depMode": false
     },
     "modules": {
         "soundboard": {
