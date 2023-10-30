@@ -192,11 +192,20 @@ def checkStatus():
 def destroy():
     global t1
     global alive
+    global groups
+    global tags
     mixer.quit()
+    for group in groups:
+        dpg.delete_item(group)
+    groups = []
+    tags = []
     dpg.delete_item("mythril")
     alive = False
     t1.join()
     print(t1.is_alive())
+
+def focusWindow():
+    dpg.focus_item("myhtril")
 
 def init():
     global config
@@ -243,6 +252,7 @@ def showWindow(show=False):
     global tags
     global currentBank
     global fade
+    global groups
 
     mixer.init()
     # Loads categories
@@ -273,19 +283,22 @@ def showWindow(show=False):
         # Creates groups to put buttons
         groups = []
         for i in range(rows):
-            groups.append(dpg.add_group(horizontal=True))
+            parentGroups = dpg.add_group(horizontal=True)
+            groups.append(parentGroups)
 
         # Adds listboxes to each row, overflows to next row if space is needed
         for i in range(total_length):
-            label = tags[i]
+            notLabel = tags[i]
             currentRow = floor(i/(width))
-            dpg.add_group(tag=label,parent=groups[currentRow],horizontal=False)
-            dpg.add_text(label,parent=label,color=(255,0,0,255),tag=(label+"Text"))
+            parentGroup = groups[currentRow]
+            dpg.add_group(tag=notLabel,parent=parentGroup,horizontal=False)
+            dpg.add_text(notLabel,parent=notLabel,color=(255,0,0,255),tag=(notLabel+"Text"))
             tagSongs = []
-            for song in os.listdir(config["musicFolder"]+"/"+label):
+            for song in os.listdir(config["musicFolder"]+"/"+notLabel):
                 tagSongs.append(song)
-            dpg.add_listbox(tagSongs,parent=label,tag=(label+"List"),user_data=tagSongs)#,callback=swapSong)
-            dpg.add_button(label="Select",parent=label,tag=(label+"Button"),callback=selectBank)
+            dpg.add_listbox(tagSongs,parent=notLabel,tag=(notLabel+"List"),user_data=tagSongs)#,callback=swapSong)
+            dpg.add_button(label="Select",parent=notLabel,tag=(notLabel+"Button"),callback=selectBank)
+        
         dpg.add_text("HELP",tag="status")
         # Tries to load first bank
         try:
