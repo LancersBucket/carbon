@@ -12,8 +12,7 @@ if (config["carbon"]["depMode"] is not False or None):
    depMode = True
    depModule = config["carbon"]["depMode"]
 
-showCL = config["carbon"]["devMode"]
-showCL = (showCL or depMode)
+showCL = (config["carbon"]["devMode"] or depMode)
 
 sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])
 

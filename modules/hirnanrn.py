@@ -11,7 +11,7 @@ def generateNames():
 
 # Isn't needed but recomened to be set as the main window's on_close callback
 def destroy():
-    dpg.delete_item("hirnanarn")
+    dpg.delete_item("hirnanrn")
     pass
 
 # CL will search for an init function when the module is loaded, helpful for any preinitalization needed for the module.
