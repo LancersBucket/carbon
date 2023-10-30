@@ -2,7 +2,6 @@ import os, sys, importlib
 import dearpygui.dearpygui as dpg
 import dearpygui.demo as demo
 import carbonmodulehelper as cmh
-from pygame import mixer
 
 config = cmh.readConfig("global")
 
@@ -88,10 +87,4 @@ if (depMode):
    dpg.set_primary_window(config["carbon"]["depMode"],True)
 dpg.start_dearpygui()
 dpg.destroy_context()
-try:
-   mixer.stop()
-   mixer.quit()
-except:
-   pass
-finally:
-   sys.exit()
+sys.exit()
