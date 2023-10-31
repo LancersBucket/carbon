@@ -6,3 +6,4 @@ mythril
 build
 dist
 *.spec
+moduleArchive

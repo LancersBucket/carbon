@@ -33,10 +33,6 @@
             "show": false,
             "musicFolder": "files"
         },
-        "al": {
-            "enable": false,
-            "show": false
-        },
         "mythril": {
             "show": false,
             "musicFolder": "mythril",
