@@ -163,6 +163,7 @@ def checkStatus():
     global playing
     global paused
     global alive
+    pygame.init()
     while alive:
         sleep(0.1)
         try:
@@ -222,11 +223,6 @@ def init():
     paused = False
     global currentBank
     currentBank = ""
-    pygame.init()
-    # Creates the monitor thread and starts it
-    global t1
-    t1 = threading.Thread(target=checkStatus,args=(),daemon=True)
-    t1.start()
 
 # Helper variable functions
 def flipFade():
@@ -255,6 +251,11 @@ def showWindow(show=False):
     global groups
 
     mixer.init()
+    # Creates the monitor thread and starts it
+    global t1
+    t1 = threading.Thread(target=checkStatus,args=(),daemon=True)
+    t1.start()
+    
     # Loads categories
     if (not os.path.isdir(config["musicFolder"])):
         os.mkdir(config["musicFolder"])
