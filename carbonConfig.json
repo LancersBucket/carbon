@@ -2,7 +2,7 @@
     "carbon": {
         "moduleLoader": "Carbon Loader",
         "moduleFolder": "modules",
-        "devMode": false,
+        "devMode": true,
         "depMode": false
     },
     "modules": {
@@ -45,6 +45,9 @@
         "hirnanrn": {
             "show": false,
             "numNames": 5
+        },
+        "tracker": {
+            "show": true
         }
     }
 }

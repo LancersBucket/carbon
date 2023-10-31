@@ -11,9 +11,11 @@ if (cmh.readValue(config["carbon"],"depMode",False) is not False or None):
    depMode = True
    depModule = config["carbon"]["depMode"]
 
-showCL = (cmh.readValue(config["carbon"],"devMode",False) or depMode)
+showCL = cmh.readValue(config["carbon"],"devMode",False) or depMode
 
-sys.path.append(os.getcwd() + "\\"+config["carbon"]["moduleFolder"])
+moduleFolder = cmh.readValue(config["carbon"],"moduleFolder","modules")
+
+sys.path.append(os.getcwd() + "\\"+moduleFolder)
 
 dpg.create_context()
 dpg.create_viewport(title='Carbon', width=700, height=600)
@@ -22,7 +24,7 @@ dpg.setup_dearpygui()
 # Module Loader
 def dynamicModuleImport(module_name):
    try:
-      load_module = importlib.import_module(module_name,os.getcwd()+"\\"+config["carbon"]["moduleFolder"]+"\\")
+      load_module = importlib.import_module(module_name,os.getcwd()+"\\"+moduleFolder+"\\")
    except Exception as e:
       print("[CL] Error: "+str(e))
       return (False, None)
@@ -41,17 +43,24 @@ for module in config["modules"]:
    out = dynamicModuleImport(module)
    
    if (cmh.readValue(config["modules"][module],"show")):
-      out[1].showWindow(True)
+      try:
+         out[1].showWindow(True)
+      except Exception as e:
+         print("[CL] Error from module \'" +str(module)+ "\': " + str(e))
    if (out[0]):
       loaded_modules.append(out[1])
       module_names.append(module)
 
 # Handles the regeneration of windows
 def window_handler():
-   if (not dpg.does_item_exist(dpg.get_value("Modules"))):
-      loaded_modules[module_names.index(dpg.get_value("Modules"))].showWindow(show=True)
-   else:
-      loaded_modules[module_names.index(dpg.get_value("Modules"))].focusWindow()
+   try:
+      module_name = dpg.get_value("Modules")
+      if (not dpg.does_item_exist(module_name)):
+         loaded_modules[module_names.index(module_name)].showWindow(show=True)
+      else:
+         loaded_modules[module_names.index(module_name)].focusWindow()
+   except Exception as e:
+      print("[CL] Error from module \'" +str(module_name)+ "\': " + str(e))
 
 # Load config file
 #dpg.configure_app(init_file="dpg.ini")
@@ -78,10 +87,11 @@ def showDemo():
 
 if (not depMode):
    with dpg.viewport_menu_bar():
-      dpg.add_menu_item(label=config["carbon"]["moduleLoader"], tag="Loader", callback=showCarbonLoader)
+      dpg.add_menu_item(label=cmh.readValue(config["carbon"],"moduleLoader","Carbon Loader"), tag="Loader", callback=showCarbonLoader)
       dpg.add_menu_item(label="Demo Menu", tag="Demo Menu", callback=showDemo)
 
 dpg.show_viewport()
+
 if (depMode):
    loaded_modules[module_names.index(depModule)].showWindow(show=True)
    dpg.set_primary_window(config["carbon"]["depMode"],True)
