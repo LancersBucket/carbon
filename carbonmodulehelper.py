@@ -4,7 +4,7 @@ import json
 carbonCore = ["shuffle","soundboard","mythril","hirnanrn"]
 
 # Gets module or global config from json file
-def readConfig(moduleName: str) -> dict:
+def getConfig(moduleName: str) -> dict:
     ConfigData = open("carbonConfig.json")
     Data = json.load(ConfigData)
     if (moduleName != "global"):

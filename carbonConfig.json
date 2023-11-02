@@ -2,7 +2,7 @@
     "carbon": {
         "moduleLoader": "Carbon Loader",
         "moduleFolder": "modules",
-        "devMode": true,
+        "devMode": false,
         "depMode": false
     },
     "modules": {

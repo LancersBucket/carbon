@@ -23,7 +23,7 @@ def destroy():
 def init():
     global config
     global numNames
-    config = cmh.readConfig("hirnanrn")
+    config = cmh.getConfig("hirnanrn")
     numNames = cmh.readValue(config,"numNames",5)
 
 # Required: Helper function for CL. This will run when trying to refocus the window through CL.

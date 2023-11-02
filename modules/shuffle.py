@@ -107,7 +107,7 @@ def focusWindow():
 
 def init():
     global config
-    config = cmh.readConfig("shuffle")
+    config = cmh.getConfig("shuffle")
     global currentPos
     currentPos = 0
     global queue

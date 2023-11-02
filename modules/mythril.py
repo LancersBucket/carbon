@@ -214,7 +214,7 @@ def focusWindow():
 
 def init():
     global config
-    config = cmh.readConfig("mythril")
+    config = cmh.getConfig("mythril")
     global currentPos
     currentPos = 0
     global tags

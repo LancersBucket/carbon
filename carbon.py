@@ -3,7 +3,7 @@ import dearpygui.dearpygui as dpg
 import dearpygui.demo as demo
 import carbonmodulehelper as cmh
 
-config = cmh.readConfig("global")
+config = cmh.getConfig("global")
 
 depMode = False
 depModule = None

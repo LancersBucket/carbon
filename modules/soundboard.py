@@ -41,9 +41,9 @@ def focusWindow():
 def init():
     # Get soundboard config
     global sbData
-    sbData = cmh.readConfig("soundboard")
+    sbData = cmh.getConfig("soundboard")
     
-    Data = cmh.readConfig("global")
+    Data = cmh.getConfig("global")
     
     # This will need to be moved to cmh
     if (sbData["regenButtons"] == True):
