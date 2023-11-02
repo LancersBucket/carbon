@@ -38,17 +38,19 @@ def dynamicModuleImport(module_name):
 loaded_modules = []
 module_names = []
 for module in config["modules"]:
+   if (depMode and not (module == depModule)):
+      continue
    if (not cmh.readValue(config["modules"][module],"enable",failReturn=True)):
       continue
-   out = dynamicModuleImport(module)
+   loaded, loaded_module = dynamicModuleImport(module)
    
    if (cmh.readValue(config["modules"][module],"show")):
       try:
-         out[1].showWindow(True)
+         loaded_module.showWindow(True)
       except Exception as e:
          print("[CL] Error from module \'" +str(module)+ "\': " + str(e))
-   if (out[0]):
-      loaded_modules.append(out[1])
+   if (loaded):
+      loaded_modules.append(loaded_module)
       module_names.append(module)
 
 # Handles the regeneration of windows
@@ -75,7 +77,7 @@ with dpg.window(label="Carbon Loader",tag="CL",collapsed=showCL,show=(showCL),no
    dpg.add_listbox(module_names,tag="Modules",callback=window_handler,width=dpg.get_item_width("CL")-15,num_items=len(loaded_modules))
    dpg.add_text("Modules Loaded: " + str(len(loaded_modules)))
    dpg.add_text("DearPyGui: v" + str(dpg.get_dearpygui_version()))
-   dpg.add_text("Carbon Loader: v1.5.1")
+   dpg.add_text("Carbon Loader: v1.6.0")
 
 def showCarbonLoader():
    dpg.focus_item("CL")

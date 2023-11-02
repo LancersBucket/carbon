@@ -1,3 +1,7 @@
+# TODO: Add direct playing from youtube
+# https://stackoverflow.com/a/8775928
+# https://stackoverflow.com/a/49354406
+
 import sys, random, os, threading, pygame
 from math import ceil, floor
 from time import sleep

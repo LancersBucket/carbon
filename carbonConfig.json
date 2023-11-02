@@ -41,9 +41,6 @@
         "hirnanrn": {
             "show": false,
             "numNames": 5
-        },
-        "tracker": {
-            "show": true
         }
     }
 }
