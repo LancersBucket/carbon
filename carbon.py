@@ -84,13 +84,9 @@ def showCarbonLoader():
    # Why is the menu bar only 18 px tall? Beats me.
    dpg.set_item_pos("CL",[0,19])
 
-def showDemo():
-   demo.show_demo()
-
 if (not depMode):
-   with dpg.viewport_menu_bar():
-      dpg.add_menu_item(label=cmh.readValue(config["carbon"],"moduleLoader","Carbon Loader"), tag="Loader", callback=showCarbonLoader)
-      dpg.add_menu_item(label="Demo Menu", tag="Demo Menu", callback=showDemo)
+   cmh.addMenuBarItem(cmh.readValue(config["carbon"],"moduleLoader","Carbon Loader"), tag="Loader", callback=showCarbonLoader)
+   cmh.addMenuBarItem("Demo Menu", tag="Demo Menu", callback=demo.show_demo)
 
 dpg.show_viewport()
 

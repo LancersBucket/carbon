@@ -1,7 +1,10 @@
-from dearpygui.dearpygui import save_init_file
+from dearpygui.dearpygui import save_init_file, viewport_menu_bar, add_menu_item, delete_item
 import json, os
 
 carbonCore = ["shuffle","soundboard","mythril","hirnanrn"]
+
+def __cmhLogger(msg):
+    print("[CMH]: " + str(msg))
 
 # Gets module or global config from json file
 def getConfig(moduleName: str) -> dict:
@@ -40,7 +43,7 @@ def isCarbonCore(moduleName: str) -> bool:
 def getCarbonCore() -> list[str]:
     return carbonCore
 
-def checkFolder(folderName: str, createFolder: bool = True, listFolder: bool =True) -> list[str]:
+def checkFolder(folderName: str, createFolder: bool = True, listFolder: bool = True) -> list[str]:
     if (not os.path.isdir(folderName)):
         if (not createFolder):
             return None
@@ -48,9 +51,19 @@ def checkFolder(folderName: str, createFolder: bool = True, listFolder: bool =Tr
             try:
                 os.mkdir(folderName)
             except Exception as e:
-                print(e)
+                __cmhLogger(e)
                 return None
             return os.listdir(folderName)
     else:
         if (listFolder):
             return os.listdir(folderName)
+
+def addMenuBarItem(label:str, tag:int|str, callback=None) -> None:
+    with viewport_menu_bar():
+        add_menu_item(label=label, tag=tag, callback=callback)
+
+def removeMenuBarItem(tag):
+    try:
+        delete_item(tag)
+    except Exception as e:
+        __cmhLogger(e)
