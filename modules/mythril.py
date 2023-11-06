@@ -263,7 +263,7 @@ def showWindow(show=False):
     # Loads categories
     if (not os.path.isdir(config["musicFolder"])):
         os.mkdir(config["musicFolder"])
-    folders = os.listdir(config["musicFolder"])
+    folders = cmh.checkFolder(config["musicFolder"])
     for tag in folders:
         if (tag.find(".") == -1):
             tags.append(tag)

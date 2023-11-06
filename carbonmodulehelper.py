@@ -1,5 +1,5 @@
 from dearpygui.dearpygui import save_init_file
-import json
+import json, os
 
 carbonCore = ["shuffle","soundboard","mythril","hirnanrn"]
 
@@ -39,3 +39,18 @@ def isCarbonCore(moduleName: str) -> bool:
 # Returns a list of Carbon Core modules
 def getCarbonCore() -> list[str]:
     return carbonCore
+
+def checkFolder(folderName: str, createFolder: bool = True, listFolder: bool =True) -> list[str]:
+    if (not os.path.isdir(folderName)):
+        if (not createFolder):
+            return None
+        else:
+            try:
+                os.mkdir(folderName)
+            except Exception as e:
+                print(e)
+                return None
+            return os.listdir(folderName)
+    else:
+        if (listFolder):
+            return os.listdir(folderName)

@@ -129,9 +129,7 @@ def showWindow(show=False):
 
     mixer.init()
     # Loads files into the queue
-    if (not os.path.isdir(config["musicFolder"])):
-        os.mkdir(config["musicFolder"])
-    songs = os.listdir(config["musicFolder"])
+    songs = cmh.checkFolder(config["musicFolder"],True,True)
     for song in songs:
         if (song.endswith((".mp3",".mid",".wav"))):
             queue.append(song)
