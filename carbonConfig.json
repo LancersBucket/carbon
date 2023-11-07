@@ -2,7 +2,7 @@
     "carbon": {
         "moduleLoader": "Carbon Loader",
         "moduleFolder": "modules",
-        "devMode": false,
+        "devMode": true,
         "depMode": false
     },
     "modules": {
@@ -34,7 +34,7 @@
             "musicFolder": "files"
         },
         "mythril": {
-            "show": false,
+            "show": true,
             "musicFolder": "mythril",
             "fadeTimeMS": 2000
         },

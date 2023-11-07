@@ -25,7 +25,7 @@ def showMessage(msg):
     dpg.set_value("status",msg)
 
 # Forward button
-def forwardButton(autoplay=False,Bastard=False):
+def forwardButton(autoplay=False):
     global currentBank
     global currentSong
     global wantToSwap
@@ -35,8 +35,6 @@ def forwardButton(autoplay=False,Bastard=False):
     global paused
     paused = False
     if (not loop):
-        if (not Bastard):
-            mixer.music.stop()
         currentBankItems = dpg.get_item_user_data(currentBank+"List")
         index = currentBankItems.index(currentSong)
         # Either increments the index by one or shuffles it, depending on the setting
@@ -153,7 +151,6 @@ def selectBank(sender=""):
     mixer.music.unload()
     dpg.set_item_label("mythrilPlay","Play")
     if (not currentBank == ""):
-        dpg.set_value(currentBank+"List",currentSong)
         dpg.configure_item(currentBank+"Text",color=(255,0,0,255))
     item = sender.split("Button")
     currentBank = item[0]
@@ -188,7 +185,6 @@ def checkStatus():
                 except:
                     pass
                 if (not loop):
-                    backButton()
                     forwardButton(autoplay=True)
                 else:
                     playPauseButton()         
