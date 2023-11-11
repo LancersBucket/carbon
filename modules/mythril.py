@@ -187,7 +187,7 @@ def checkStatus():
                 if (not loop):
                     forwardButton(autoplay=True)
                 else:
-                    playPauseButton()         
+                    playPauseButton()
 
 # Destroy function, common to all modules
 def destroy():

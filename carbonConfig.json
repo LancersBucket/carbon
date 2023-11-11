@@ -34,7 +34,7 @@
             "musicFolder": "files"
         },
         "mythril": {
-            "show": true,
+            "show": false,
             "musicFolder": "mythril",
             "fadeTimeMS": 2000
         },
